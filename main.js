@@ -1,5 +1,3 @@
-console.log('ok');
-
 const balance = document.getElementById('balance');
 const income = document.getElementById('income');
 const expense = document.getElementById('expense');
@@ -29,10 +27,40 @@ function addAmountsToDOM(transaction) {
   list.appendChild(listItem);
 }
 
+function updateValues() {
+  const amounts = transactions.map(transaction =>
+    transaction.amount);
+
+  const total = amounts
+    .reduce((acc, item) => (acc += item), 0)
+    .toFixed(2);
+
+  const totalIncome = amounts
+    .filter(item => item > 0)
+    .reduce((acc, item) => (acc += item), 0)
+    .toFixed(2)
+
+  const totalExpense = (amounts
+    .filter(item => item < 0)
+    .reduce((acc, item) => (acc += item))
+    .toFixed(2)) * -1;
+
+  balance.textContent = `
+    $${total}
+  `
+  income.textContent = `
+    +$${totalIncome}
+  `
+
+  expense.textContent = `
+    -$${totalExpense}
+  `
+}
 
 function init() {
   // list.innerHTML = '';
   transactions.forEach(addAmountsToDOM);
+  updateValues()
 }
 
 init();
