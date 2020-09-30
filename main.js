@@ -2,6 +2,7 @@ const balance = document.getElementById('balance');
 const income = document.getElementById('income');
 const expense = document.getElementById('expense');
 const list = document.querySelector('.list');
+const form = document.getElementById('form');
 const text = document.getElementById('text');
 const amount = document.getElementById('amount');
 const addTransactionBtn = document.getElementById('add-transaction-btn');
@@ -15,6 +16,32 @@ const dummyExpenses = [
 ]
 
 let transactions = dummyExpenses;
+
+function addSingleTransaction(e) {
+  e.preventDefault();
+
+  const singleTransaction = {
+    id: generateID(),
+    text: text.value,
+    amount: +amount.value,
+  }
+  // addAmountsToDOM(singleTransaction)
+
+  if (text.value === '' || amount.value === '') {
+    alert('Please enter text and amount')
+  } else {
+    addAmountsToDOM(singleTransaction)
+    transactions.push(singleTransaction);
+    updateValues();
+    text.value = '';
+    amount.value = ';'
+  }
+
+}
+
+function generateID() {
+  return Math.floor(Math.random() * 100000000000);
+}
 
 function addAmountsToDOM(transaction) {
   const sign = transaction.amount < 0 ? '-' : '+';
@@ -64,3 +91,5 @@ function init() {
 }
 
 init();
+
+form.addEventListener('submit', addSingleTransaction);
