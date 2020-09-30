@@ -6,7 +6,7 @@ const form = document.getElementById('form');
 const text = document.getElementById('text');
 const amount = document.getElementById('amount');
 const addTransactionBtn = document.getElementById('add-transaction-btn');
-const deleteBtn = document.querySelector('delete-btn');
+// const deleteBtn = document.querySelector('delete-btn');
 
 const dummyExpenses = [
   { id: 1, text: 'Flowers', amount: -25 },
@@ -34,7 +34,7 @@ function addSingleTransaction(e) {
     transactions.push(singleTransaction);
     updateValues();
     text.value = '';
-    amount.value = ';'
+    amount.value = ''
   }
 
 }
@@ -48,7 +48,7 @@ function addAmountsToDOM(transaction) {
   const listItem = document.createElement('li');
   listItem.classList.add(transaction.amount < 0 ? 'minus' : 'plus');
   listItem.innerHTML = `
-  ${transaction.text} <span>${sign} ${Math.abs(transaction.amount)}</span> <button class="delete-btn">x</button>
+  ${transaction.text} <span>${sign} ${Math.abs(transaction.amount)}</span> <button class="delete-btn" onclick="deleteTransaction(${transaction.id})">x</button>
   `;
 
   list.appendChild(listItem);
@@ -84,8 +84,14 @@ function updateValues() {
   `
 }
 
+function deleteTransaction(id) {
+  transactions = transactions.filter(transaction => transaction.id !== id);
+
+  init();
+}
+
 function init() {
-  // list.innerHTML = '';
+  list.innerHTML = '';
   transactions.forEach(addAmountsToDOM);
   updateValues()
 }
