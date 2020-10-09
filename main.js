@@ -8,14 +8,20 @@ const amount = document.getElementById('amount');
 const addTransactionBtn = document.getElementById('add-transaction-btn');
 // const deleteBtn = document.querySelector('delete-btn');
 
-const dummyExpenses = [
-  { id: 1, text: 'Flowers', amount: -25 },
-  { id: 2, text: 'Income', amount: 400 },
-  { id: 3, text: 'Dinner', amount: -120 },
-  { id: 4, text: 'Project', amount: 280 },
-]
+// const dummyExpenses = [
+//   { id: 1, text: 'Flowers', amount: -25 },
+//   { id: 2, text: 'Income', amount: 400 },
+//   { id: 3, text: 'Dinner', amount: -120 },
+//   { id: 4, text: 'Project', amount: 280 },
+// ]
 
-let transactions = dummyExpenses;
+const localStorageTransactions = JSON.parse(localStorage.getItem('transactions'));
+
+let transactions = localStorage.getItem("transactions") !== null ? localStorageTransactions : [];
+
+function updateLocalStorage() {
+  localStorage.setItem('transactions', JSON.stringify(transactions))
+}
 
 function addSingleTransaction(e) {
   e.preventDefault();
@@ -36,6 +42,7 @@ function addSingleTransaction(e) {
     text.value = '';
     amount.value = ''
   }
+  updateLocalStorage()
 
 }
 
@@ -86,9 +93,10 @@ function updateValues() {
 
 function deleteTransaction(id) {
   transactions = transactions.filter(transaction => transaction.id !== id);
-
+  updateLocalStorage()
   init();
 }
+
 
 function init() {
   list.innerHTML = '';
